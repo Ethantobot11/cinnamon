@@ -19,14 +19,13 @@ jobs:
           export DEVKITPPC=$DEVKITPRO/devkitPPC
           export PATH=$DEVKITPRO/tools/bin:$DEVKITPPC/bin:/usr/bin:$PATH
           mkdir -p build output-wiiu
-          echo "--- Compiling ---"
-          make BUILD="build" SOURCE="source" --no-print-directory
-          
+          echo "--- Compiling with Makefile.wiiu ---"
+          make -f Makefile.wiiu BUILD="build" SOURCE="source" --no-print-directory
           echo "--- Converting to RPX ---"
+          # Look for the .elf file produced by the wiiu build
           ELF_FILE=$(find build -name "*.elf" | head -n 1)
           RPX_FILE="${ELF_FILE%.elf}.rpx"
           elf2rpl "$ELF_FILE" "$RPX_FILE"
-          
           echo "--- Packaging WUHB ---"
           wuhbtool "output-wiiu/deltarune.wuhb" "$RPX_FILE" \
             --name "Deltarune" \
