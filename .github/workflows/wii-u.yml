@@ -1,6 +1,8 @@
 name: Build Wii U WUHB
 
 on:
+  push:
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -11,30 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download and Install devkitPro Tools
+      - name: Install devkitPro via Chocolatey
         shell: powershell
         run: |
-          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-          $url = "https://github.com/devkitPro/installer/releases/download/v3.0.3/devkitpro-pacman-installer.exe"
-          curl.exe -L $url --output dkp-install.exe --retry 5 --retry-delay 5
-          Write-Host "Starting installation..."
-          Start-Process -FilePath ".\dkp-install.exe" -ArgumentList "/S" -Wait
-          $env:PATH += ";C:\devkitPro\pacman\bin"
-          & "C:\devkitPro\pacman\bin\dkp-pacman.exe" -Sy --noconfirm
+          choco install devkitpro-pacman -y
+          $env:Path += ";C:\devkitPro\pacman\bin"
+          & "C:\devkitPro\pacman\bin\dkp-pacman.exe" -Syy --noconfirm
           & "C:\devkitPro\pacman\bin\dkp-pacman.exe" -S --noconfirm wiiu-dev wuhbtool
 
       - name: Run Build Script
         shell: cmd
         run: |
-          set DEVKITPRO=/opt/devkitpro
-          set DEVKITPPC=%DEVKITPRO%/devkitPPC
-          set PATH=C:\devkitPro\tools\bin;C:\devkitPro\devkitPPC\bin;%PATH%
-          call whub.bat
-        env:
-          DEVKITPRO: C:\devkitPro
-
-      - name: Upload WUHB Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: deltarune-wuhb
-          path: output-wiiu/
+          set DEVKITPRO=C:\devkitPro
+          set DEVKITPPC=%DEVKITPRO%\devkitPPC
+          set PATH=%DEVKITPRO%\tools\bin;%DEVKITPRO%\pacman\bin;%DEVKITPPC%\bin;%PATH%
+          call build.bat
