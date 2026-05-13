@@ -7,36 +7,25 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    container: devkitpro/devkitppc:latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup devkitPro via MSYS2
-        uses: msys2/setup-msys2@v2
-        with:
-          msystem: MSYS
-          update: true
-          install: >-
-            make
-            zip
-            unzip
-
-      - name: Install Wii U Tools
-        shell: msys2 {0}
+      - name: Install Wii U Dependencies
         run: |
-          curl -L https://pkg.devkitpro.org/devkitpro-keyring.pkg.tar.xz -o keyring.pkg.tar.xz
-          pacman -U --noconfirm keyring.pkg.tar.xz
-          echo -e "\n[dkp-libs]\nServer = https://pkg.devkitpro.org/packages" >> /etc/pacman.conf
-          echo -e "\n[dkp-windows]\nServer = https://pkg.devkitpro.org/packages/windows" >> /etc/pacman.conf
-          pacman -Sy --noconfirm
-          pacman -S --noconfirm wiiu-dev wuhbtool
+          sudo dkp-pacman -Syyu --noconfirm
+          sudo dkp-pacman -S --noconfirm wiiu-dev wuhbtool
 
       - name: Run Build Script
-        shell: cmd
         run: |
-          set DEVKITPRO=C:\msys64\opt\devkitpro
-          set DEVKITPPC=%DEVKITPRO%\devkitPPC
-          set PATH=C:\msys64\usr\bin;%DEVKITPRO%\tools\bin;%DEVKITPPC%\bin;%PATH%
-          call whub.bat
+          chmod +x build-wiiu.sh
+          ./build-wiiu.sh
+
+      - name: Upload WUHB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wiiu-build-output
+          path: output-wiiu/
