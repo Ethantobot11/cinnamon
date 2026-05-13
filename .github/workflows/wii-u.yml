@@ -20,9 +20,15 @@ jobs:
 
       - name: Run Build Script
         run: |
-          chmod +x build-wiiu.sh
           sed -i 's/\r$//' build-wiiu.sh
+          chmod +x build-wiiu.sh
+          export DEVKITPRO=/opt/devkitpro
+          export DEVKITPPC=/opt/devkitpro/devkitPPC
+          export PATH=$DEVKITPRO/tools/bin:$DEVKITPPC/bin:/usr/bin:$PATH
           ./build-wiiu.sh
+        env:
+          DEVKITPRO: /opt/devkitpro
+          DEVKITPPC: /opt/devkitpro/devkitPPC
 
       - name: Upload WUHB Artifact
         uses: actions/upload-artifact@v4
