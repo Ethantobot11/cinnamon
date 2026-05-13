@@ -1,0 +1,32 @@
+name: Build Wii U WUHB
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install devkitPro & Wii U Tools
+        uses: devkitPro/setup-devkitpro-action@v1
+        with:
+          dkp-packages: |
+            wiiu-dev
+            wuhbtool
+
+      - name: Run Build Script
+        shell: cmd
+        run: |
+          call build.bat
+        env:
+          DEVKITPRO: C:\devkitPro
+
+      - name: Upload WUHB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deltarune-wuhb
+          path: output-wiiu/deltarune.wuhb
