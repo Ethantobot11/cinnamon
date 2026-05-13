@@ -18,23 +18,18 @@ jobs:
           export DEVKITPRO=/opt/devkitpro
           export DEVKITPPC=$DEVKITPRO/devkitPPC
           export PATH=$DEVKITPRO/tools/bin:$DEVKITPPC/bin:/usr/bin:$PATH
-          mkdir -p build output-wiiu
-          echo "--- Compiling ---"
-          make BUILD="build" SOURCE="source" --no-print-directory
-          
-          echo "--- Converting to RPX ---"
-          ELF_FILE=$(find build -name "*.elf" | head -n 1)
-          RPX_FILE="${ELF_FILE%.elf}.rpx"
-          elf2rpl "$ELF_FILE" "$RPX_FILE"
-          
-          echo "--- Packaging WUHB ---"
-          wuhbtool "output-wiiu/deltarune.wuhb" "$RPX_FILE" \
-            --name "Deltarune" \
-            --short-name "deltarune" \
-            --author "Grayforz2468" \
-            --icon "resources/wiiu/icon.png"
+          mkdir -p output-wiiu
+          echo "--- Starting Build ---"
+          make -f Makefile.wiiu --no-print-directory
+          if [ -f "deltarune.wuhb" ]; then
+            mv deltarune.wuhb output-wiiu/deltarune.wuhb
+          elif [ -f "undertale.wuhb" ]; then
+            mv undertale.wuhb output-wiiu/deltarune.wuhb
+          fi
       - name: Upload WUHB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: deltarune-wuhb
-          path: output-wiiu/
+          path: |
+            *.wuhb
+            output-wiiu/*.wuhb

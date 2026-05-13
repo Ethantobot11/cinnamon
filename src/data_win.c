@@ -9,7 +9,7 @@
 #include "stb_ds.h"
 #include "utils.h"
 
-#ifdef __3DS__
+#if defined(__3DS__) && !defined(__WIIU__)
 #include <3ds/os.h>
 #endif
 
