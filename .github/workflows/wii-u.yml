@@ -16,7 +16,7 @@ jobs:
 
       - name: Install Wii U Dependencies
         run: |
-          sudo dkp-pacman -S --noconfirm wiiu-dev wuhbtool
+          sudo dkp-pacman -S --noconfirm wiiu-dev
 
       - name: Run Build Script
         run: |
