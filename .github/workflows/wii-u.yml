@@ -14,11 +14,14 @@ jobs:
       - name: Download and Install devkitPro Tools
         shell: powershell
         run: |
-          Invoke-WebRequest -Uri "https://github.com/devkitPro/installer/releases/download/v3.0.3/devkitpro-pacman-installer.exe" -OutFile "dkp-install.exe"
+          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+          $url = "https://github.com/devkitPro/installer/releases/download/v3.0.3/devkitpro-pacman-installer.exe"
+          curl.exe -L $url --output dkp-install.exe --retry 5 --retry-delay 5
+          Write-Host "Starting installation..."
           Start-Process -FilePath ".\dkp-install.exe" -ArgumentList "/S" -Wait
           $env:PATH += ";C:\devkitPro\pacman\bin"
-          dkp-pacman -Sy
-          dkp-pacman -S --noconfirm wiiu-dev wuhbtool
+          & "C:\devkitPro\pacman\bin\dkp-pacman.exe" -Sy --noconfirm
+          & "C:\devkitPro\pacman\bin\dkp-pacman.exe" -S --noconfirm wiiu-dev wuhbtool
 
       - name: Run Build Script
         shell: cmd
