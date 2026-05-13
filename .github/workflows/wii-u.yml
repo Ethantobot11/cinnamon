@@ -11,16 +11,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install devkitPro & Wii U Tools
-        uses: devkitPro/setup-devkitpro-action@v1
-        with:
-          dkp-packages: |
-            wiiu-dev
-            wuhbtool
+      - name: Download and Install devkitPro Tools
+        shell: powershell
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/devkitPro/installer/releases/download/v3.0.3/devkitpro-pacman-installer.exe" -OutFile "dkp-install.exe"
+          Start-Process -FilePath ".\dkp-install.exe" -ArgumentList "/S" -Wait
+          $env:PATH += ";C:\devkitPro\pacman\bin"
+          dkp-pacman -Sy
+          dkp-pacman -S --noconfirm wiiu-dev wuhbtool
 
       - name: Run Build Script
         shell: cmd
         run: |
+          set DEVKITPRO=/opt/devkitpro
+          set DEVKITPPC=%DEVKITPRO%/devkitPPC
+          set PATH=C:\devkitPro\tools\bin;C:\devkitPro\devkitPPC\bin;%PATH%
           call build.bat
         env:
           DEVKITPRO: C:\devkitPro
@@ -29,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: deltarune-wuhb
-          path: output-wiiu/deltarune.wuhb
+          path: output-wiiu/
