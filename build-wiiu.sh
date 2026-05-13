@@ -5,9 +5,9 @@ export DEVKITPPC=$DEVKITPRO/devkitPPC
 set -e
 
 # ── Config ────────────────────────────────────────────────────────────────────
-APP_NAME="My App"
-SHORT_NAME="MyApp"
-AUTHOR="YourName"
+APP_NAME="Deltarune"
+SHORT_NAME="deltarune"
+AUTHOR="Grayforz2468"
 VERSION="1.0.0"
 
 SOURCE_DIR="./source"
