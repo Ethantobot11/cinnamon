@@ -26,7 +26,7 @@ jobs:
           set DEVKITPRO=/opt/devkitpro
           set DEVKITPPC=%DEVKITPRO%/devkitPPC
           set PATH=C:\devkitPro\tools\bin;C:\devkitPro\devkitPPC\bin;%PATH%
-          call build.bat
+          call whub.bat
         env:
           DEVKITPRO: C:\devkitPro
 
