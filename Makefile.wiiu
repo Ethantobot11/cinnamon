@@ -20,8 +20,8 @@ INCLUDES    := include src src/wiiu
 OUTPUT      := output-wiiu
 CONTENT_DIR := $(TOPDIR)/$(OUTPUT)/content
 
-export APP_NAME        := Undertale
-export APP_SHORTNAME   := Undertale
+export APP_NAME        := Deltarune
+export APP_SHORTNAME   := Deltarune
 export APP_AUTHOR      := Grayforz2468
 export APP_ICON        := $(TOPDIR)/resources/wiiu/icon.png
 export APP_TV_IMAGE    := $(TOPDIR)/resources/wiiu/tv.png

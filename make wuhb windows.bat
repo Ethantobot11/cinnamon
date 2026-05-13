@@ -3,8 +3,8 @@ setlocal enabledelayedexpansion
 title WUHB Builder
 
 :: ── Config ────────────────────────────────────────────────────────────────────
-set APP_NAME=Undertale
-set SHORT_NAME=undertale
+set APP_NAME=Deltarune
+set SHORT_NAME=deltarune
 set AUTHOR=Grayforz2468
 set VERSION=1.0.0
 
