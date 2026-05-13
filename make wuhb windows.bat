@@ -28,7 +28,6 @@ if "%DEVKITPRO%"=="" (
     echo Error: DEVKITPRO is not set.
     echo Set it in System Environment Variables, e.g:
     echo   DEVKITPRO=C:\devkitPro
-    pause
     exit /b 1
 )
 
@@ -46,7 +45,6 @@ for %%T in (make.exe wuhbtool.exe elf2rpl.exe) do (
         echo Error: '%%T' not found.
         echo Install wiiu-dev via devkitPro pacman:
         echo   pacman -S wiiu-dev
-        pause
         exit /b 1
     )
 )
@@ -67,7 +65,6 @@ echo [1/3] Compiling source...
 make BUILD="%BUILD_DIR%" SOURCE="%SOURCE_DIR%" --no-print-directory
 if errorlevel 1 (
     echo Error: Compilation failed.
-    pause
     exit /b 1
 )
 
@@ -81,7 +78,6 @@ for /r "%BUILD_DIR%" %%F in (*.elf) do (
 
 if "%ELF_FILE%"=="" (
     echo Error: No .elf file found in %BUILD_DIR% after build.
-    pause
     exit /b 1
 )
 
@@ -91,7 +87,6 @@ set RPX_FILE=%ELF_FILE:.elf=.rpx%
 elf2rpl "%ELF_FILE%" "%RPX_FILE%"
 if errorlevel 1 (
     echo Error: elf2rpl conversion failed.
-    pause
     exit /b 1
 )
 
@@ -107,7 +102,6 @@ if exist "%DRC_IMAGE%" set WUHB_ARGS=%WUHB_ARGS% --drc-image "%DRC_IMAGE%"
 wuhbtool %WUHB_ARGS%
 if errorlevel 1 (
     echo Error: wuhbtool packaging failed.
-    pause
     exit /b 1
 )
 
@@ -118,4 +112,3 @@ echo.
 echo Copy to SD card:
 echo   sd:\wiiu\apps\%SHORT_NAME%\%SHORT_NAME%.wuhb
 echo.
-pause
