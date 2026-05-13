@@ -20,7 +20,7 @@ jobs:
           export PATH=$DEVKITPRO/tools/bin:$DEVKITPPC/bin:/usr/bin:$PATH
           mkdir -p build output-wiiu
           echo "--- Compiling ---"
-          make -f Makefile.wiiu OUTPUT="output-wiiu/deltarune.wuhb" --no-print-directory
+          make -f Makefile.wiiu --no-print-directory
           echo "--- Converting to RPX ---"
           ELF_FILE=$(find build -name "*.elf" | head -n 1)
           RPX_FILE="${ELF_FILE%.elf}.rpx"
@@ -38,4 +38,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: deltarune-wuhb
-          path: output-wiiu/
+          path: |
+            *.wuhb
+            output-wiiu/*.wuhb
