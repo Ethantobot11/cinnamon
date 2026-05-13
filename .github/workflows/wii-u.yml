@@ -13,18 +13,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install devkitPro via Chocolatey
-        shell: powershell
+      - name: Setup devkitPro via MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MSYS
+          update: true
+          install: >-
+            make
+            zip
+            unzip
+
+      - name: Install Wii U Tools
+        shell: msys2 {0}
         run: |
-          choco install devkitpro-pacman -y
-          $env:Path += ";C:\devkitPro\pacman\bin"
-          & "C:\devkitPro\pacman\bin\dkp-pacman.exe" -Syy --noconfirm
-          & "C:\devkitPro\pacman\bin\dkp-pacman.exe" -S --noconfirm wiiu-dev wuhbtool
+          curl -L https://pkg.devkitpro.org/devkitpro-keyring.pkg.tar.xz -o keyring.pkg.tar.xz
+          pacman -U --noconfirm keyring.pkg.tar.xz
+          echo -e "\n[dkp-libs]\nServer = https://pkg.devkitpro.org/packages" >> /etc/pacman.conf
+          echo -e "\n[dkp-windows]\nServer = https://pkg.devkitpro.org/packages/windows" >> /etc/pacman.conf
+          pacman -Sy --noconfirm
+          pacman -S --noconfirm wiiu-dev wuhbtool
 
       - name: Run Build Script
         shell: cmd
         run: |
-          set DEVKITPRO=C:\devkitPro
+          set DEVKITPRO=C:\msys64\opt\devkitpro
           set DEVKITPPC=%DEVKITPRO%\devkitPPC
-          set PATH=%DEVKITPRO%\tools\bin;%DEVKITPRO%\pacman\bin;%DEVKITPPC%\bin;%PATH%
-          call build.bat
+          set PATH=C:\msys64\usr\bin;%DEVKITPRO%\tools\bin;%DEVKITPPC%\bin;%PATH%
+          call whub.bat
