@@ -86,7 +86,7 @@ static void openBootLog(void) {
     if (mountPath == NULL) return;
 
     char logPath[512];
-    snprintf(logPath, sizeof(logPath), "%s/wiiu/apps/cinnamon/bootlog.txt", mountPath);
+    snprintf(logPath, sizeof(logPath), "%s/wiiu/apps/UTY/bootlog.txt", mountPath);
     gBootLogFd = open(logPath, O_WRONLY | O_CREAT | O_TRUNC, 0666);
     if (gBootLogFd < 0) return;
 
@@ -113,7 +113,7 @@ static char* buildDefaultDataWinPath(const char* argv0) {
     const char* mountPath = WHBGetSdCardMountPath();
     if (mountPath != NULL) {
         char sdAppPath[512];
-        snprintf(sdAppPath, sizeof(sdAppPath), "%s/wiiu/apps/cinnamon/data.win", mountPath);
+        snprintf(sdAppPath, sizeof(sdAppPath), "%s/wiiu/apps/UTY/data.win", mountPath);
         if (fileExistsAtPath(sdAppPath)) return strdup(sdAppPath);
     }
 
