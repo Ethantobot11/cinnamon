@@ -13,15 +13,15 @@ endif
 TOPDIR ?= $(CURDIR)
 include $(DEVKITPRO)/wut/share/wut_rules
 
-TARGET      := deltarune
+TARGET      := undertale-yellow
 BUILD       := build-wiiu
 SOURCES     := src src/wiiu
 INCLUDES    := include src src/wiiu
 OUTPUT      := output-wiiu
 CONTENT_DIR := $(TOPDIR)/$(OUTPUT)/content
 
-export APP_NAME        := Deltarune
-export APP_SHORTNAME   := Deltarune
+export APP_NAME        := Undertale Yellow
+export APP_SHORTNAME   := UTY
 export APP_AUTHOR      := Grayforz2468
 export APP_ICON        := $(TOPDIR)/resources/wiiu/icon.png
 export APP_TV_IMAGE    := $(TOPDIR)/resources/wiiu/tv.png
