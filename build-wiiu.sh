@@ -5,8 +5,8 @@ export DEVKITPPC=$DEVKITPRO/devkitPPC
 set -e
 
 # ── Config ────────────────────────────────────────────────────────────────────
-APP_NAME="Deltarune"
-SHORT_NAME="deltarune"
+APP_NAME="Undertale Yellow"
+SHORT_NAME="Udertale Yellow"
 AUTHOR="Grayforz2468"
 VERSION="1.0.0"
 
