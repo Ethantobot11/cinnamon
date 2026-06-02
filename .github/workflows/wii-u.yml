@@ -22,9 +22,9 @@ jobs:
           echo "--- Starting Build ---"
           make -f Makefile.wiiu --no-print-directory
           if [ -f "deltarune.wuhb" ]; then
-            mv deltarune.wuhb output-wiiu/deltarune.wuhb
+            mv deltarune.wuhb output-wiiu/undertale-yellow.wuhb
           elif [ -f "undertale.wuhb" ]; then
-            mv undertale.wuhb output-wiiu/deltarune.wuhb
+            mv undertale.wuhb output-wiiu/undertale-yellow.wuhb
           fi
       - name: Upload WUHB Artifact
         uses: actions/upload-artifact@v4
